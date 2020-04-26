@@ -6,6 +6,8 @@ public class Percolation {
     private int n;
     private int[] sites;
     private WeightedQuickUnionUF wqUnion;
+    private int virtualBottom;
+    private int virtualTop;
 
     public Percolation(int n) {
         if(n <= 0){
@@ -16,8 +18,10 @@ public class Percolation {
             }
         }
         this.n = n;
-        wqUnion = new WeightedQuickUnionUF(n * n);
+        wqUnion = new WeightedQuickUnionUF(n * n + 2); // Grid size + virtual top + virtual bottom
         sites = new int[n * n];
+        virtualTop = n * n;
+        virtualBottom = n * n + 1;
         for(int i = 0; i < n * n; i++){
             sites[i] = 0;
         }
@@ -39,6 +43,12 @@ public class Percolation {
         int[] neighbors;
         if(sites[index] == 1){
             return;
+        }
+        if(index < n){
+            wqUnion.union(index, virtualTop);
+        }
+        if(index > n * n - n){
+            wqUnion.union(index, virtualBottom);
         }
         int neighbor;
         neighbors = this.getNeighbors(index);
@@ -114,16 +124,7 @@ public class Percolation {
     }
 
     public boolean percolates(){
-        for(int i = 0; i < n; i++){
-            if(sites[i] == 1){
-                for(int j = sites.length - n; j < sites.length; j++){
-                    if(wqUnion.find(i) == wqUnion.find(j)){
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        return wqUnion.find(virtualTop) == wqUnion.find(virtualBottom);
     }
 
     public static void main(String[] args){
