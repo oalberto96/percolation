@@ -80,7 +80,18 @@ public class Percolation {
     public boolean isFull(int row, int col){
         this.validateRanges(row, col);
         int index = this.getIndex(row, col);
-        return sites[index] == 1;
+        if(isOpen(row, col) == false){
+            return false;
+        }
+        if(index < n) return true;
+        for(int i = 0; i < n; i++){
+            if(sites[i] == 1){
+                if(wqUnion.find(i) == wqUnion.find(index)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public int numberOfOpenSites(){
