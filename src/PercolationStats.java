@@ -7,6 +7,9 @@ public class PercolationStats {
     private double[] results;
 
     public PercolationStats(int n, int trials) {
+        if(n <= 0 || trials <= 0){
+            throw new IllegalArgumentException();
+        }
         results = new double[trials];
         for(int i = 0; i < trials; i++){
             results[i] = runSample(n);

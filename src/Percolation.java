@@ -93,15 +93,7 @@ public class Percolation {
         if(isOpen(row, col) == false){
             return false;
         }
-        if(index < n) return true;
-        for(int i = 0; i < n; i++){
-            if(sites[i] == 1){
-                if(wqUnion.find(i) == wqUnion.find(index)){
-                    return true;
-                }
-            }
-        }
-        return false;
+        return wqUnion.find(index) == wqUnion.find(virtualTop);
     }
 
     public int numberOfOpenSites(){
@@ -116,9 +108,9 @@ public class Percolation {
 
     private void print(){
         for(int i = 0; i < sites.length; i++){
-            System.out.print(sites[i]);
-            if((i + 1)%5 == 0){
-                System.out.println('-');
+            System.out.print(sites[i] + "\t");
+            if((i + 1)%n == 0){
+                System.out.println("");
             }
         }
     }
@@ -128,7 +120,7 @@ public class Percolation {
     }
 
     public static void main(String[] args){
-        Percolation p = null;
-        p = new Percolation(5);
+        Percolation p = new Percolation(3);
+        System.out.println(p.percolates());
     }
 }
