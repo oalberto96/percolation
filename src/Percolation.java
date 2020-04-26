@@ -28,7 +28,7 @@ public class Percolation {
         }
     }
 
-    public int getIndex(int row, int col){
+    private int getIndex(int row, int col){
         return n * (row - 1) + col - 1;
     }
 
@@ -50,7 +50,7 @@ public class Percolation {
         neighbors.forEach(fillNeighbors);
     }
 
-    public List<Integer> getNeighbors(int index){
+    private List<Integer> getNeighbors(int index){
         List<Integer> neighbors = new ArrayList<Integer>();
         int indexAux = index + 1;
         if(indexAux > n){
@@ -90,7 +90,7 @@ public class Percolation {
         return openSites;
     }
 
-    public void print(){
+    private void print(){
         for(int i = 0; i < sites.length; i++){
             System.out.print(sites[i]);
             if((i + 1)%5 == 0){
