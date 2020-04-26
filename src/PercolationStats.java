@@ -6,7 +6,7 @@ public class PercolationStats {
 
     private double[] results;
 
-    public PercolationStats(int n, int trials) throws IllegalAccessException {
+    public PercolationStats(int n, int trials) {
         results = new double[trials];
         for(int i = 0; i < trials; i++){
             results[i] = runSample(n);
@@ -16,7 +16,7 @@ public class PercolationStats {
     /*
     It returns the percolation threshold
      */
-    private double runSample(int n) throws IllegalAccessException {
+    private double runSample(int n) {
         int randomCol, randomRow;
         Percolation percolation = new Percolation(n);
         while(percolation.percolates() != true){
@@ -45,16 +45,12 @@ public class PercolationStats {
     }
 
     public static void main(String[] args){
-        try {
-            int n, t;
-            n = Integer.parseInt(args[0]);
-            t = Integer.parseInt(args[1]);
-            PercolationStats percolationStats = new PercolationStats(n, t);
-            System.out.println("mean \t\t\t\t\t= " + percolationStats.mean());
-            System.out.println("stddev \t\t\t\t\t= " + percolationStats.stddev());
-            System.out.println("95% confidence interval = [" + percolationStats.confidenceLo() + ", " + percolationStats.confidenceHi() + "]" );
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        int n, t;
+        n = Integer.parseInt(args[0]);
+        t = Integer.parseInt(args[1]);
+        PercolationStats percolationStats = new PercolationStats(n, t);
+        System.out.println("mean \t\t\t\t\t= " + percolationStats.mean());
+        System.out.println("stddev \t\t\t\t\t= " + percolationStats.stddev());
+        System.out.println("95% confidence interval = [" + percolationStats.confidenceLo() + ", " + percolationStats.confidenceHi() + "]" );
     }
 }

@@ -1,8 +1,5 @@
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
 
 public class Percolation {
 
@@ -10,9 +7,13 @@ public class Percolation {
     private int[] sites;
     private WeightedQuickUnionUF wqUnion;
 
-    public Percolation(int n) throws IllegalAccessException {
+    public Percolation(int n) {
         if(n <= 0){
-            throw new IllegalAccessException("n <= 0");
+            try {
+                throw new IllegalAccessException("n <= 0");
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
         this.n = n;
         wqUnion = new WeightedQuickUnionUF(n * n);
@@ -35,35 +36,37 @@ public class Percolation {
     public void open(int row, int col){
         this.validateRanges(row, col);
         int index = this.getIndex(row, col);
-        List<Integer> neighbors;
+        int[] neighbors;
         if(sites[index] == 1){
             return;
         }
+        int neighbor;
         neighbors = this.getNeighbors(index);
         sites[index] = 1;
-
-        Consumer<Integer> fillNeighbors = neighbor -> {
-            if(sites[neighbor] == 1){
-                wqUnion.union(index, neighbor);
+        for(int i = 0; i < neighbors.length; i++){
+            neighbor = neighbors[i];
+            if(neighbor != -1){
+                if(sites[neighbor] == 1){
+                    wqUnion.union(index, neighbor);
+                }
             }
-        };
-        neighbors.forEach(fillNeighbors);
+        }
     }
 
-    private List<Integer> getNeighbors(int index){
-        List<Integer> neighbors = new ArrayList<Integer>();
+    private int[] getNeighbors(int index){
+        int[] neighbors = new int[]{-1, -1, -1, -1};
         int indexAux = index + 1;
         if(indexAux > n){
-            neighbors.add(index - n);
+            neighbors[0] = index - n;
         }
         if( indexAux <= n * n - n){
-            neighbors.add(index + n);
+            neighbors[1] = index + n;
         }
         if(indexAux%n != 0){
-            neighbors.add(index + 1);
+            neighbors[2] = index + 1;
         }
         if(indexAux > 1 && (indexAux -1)%n != 0){
-            neighbors.add(index - 1);
+            neighbors[3] = index - 1;
         }
         return neighbors;
     }
@@ -114,10 +117,6 @@ public class Percolation {
 
     public static void main(String[] args){
         Percolation p = null;
-        try {
-            p = new Percolation(5);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        p = new Percolation(5);
     }
 }
